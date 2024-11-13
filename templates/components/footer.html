@@ -1,0 +1,56 @@
+<footer class="bg-white border-t border-gray-200">
+  <div class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="space-y-4">
+        <h3 class="text-lg font-semibold">YourEmailValidator</h3>
+        <p class="text-gray-500 text-sm">Simple, reliable email validation API for developers.</p>
+      </div>
+
+      <div class="space-y-4">
+        <h4 class="text-sm font-semibold">Product</h4>
+        <ul class="space-y-2 text-sm text-gray-500">
+          <li>
+            <a href="#features" class="hover:text-purple-500">Features</a>
+          </li>
+          <li>
+            <a href="#pricing" class="hover:text-purple-500">Pricing</a>
+          </li>
+          <li>
+            <a href="{{ url_for('documentation') }}" class="hover:text-purple-500">API</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="space-y-4">
+        <h4 class="text-sm font-semibold">Resources</h4>
+        <ul class="space-y-2 text-sm text-gray-500">
+          <li>
+            <a href="{{ url_for('documentation') }}" class="hover:text-purple-500">Documentation</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-purple-500">GitHub</a>
+          </li>
+          <li>
+            <a href="#faq" class="hover:text-purple-500">FAQ</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="space-y-4">
+        <h4 class="text-sm font-semibold">Legal</h4>
+        <ul class="space-y-2 text-sm text-gray-500">
+          <li>
+            <a href="#" class="hover:text-purple-500">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-purple-500">Terms of Service</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-8 pt-8 border-t border-gray-200">
+      <p class="text-center text-sm text-gray-500">© {{ current_year }} YourEmailValidator. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
