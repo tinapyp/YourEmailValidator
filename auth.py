@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Optional
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -65,3 +65,13 @@ def verify_api_key(api_key: str, db: Session):
     if not db_key:
         return None
     return db_key.user
+
+
+# Optional user for non-protected routes
+async def get_current_user_optional(
+    request: Request, db: Session = Depends(get_db)
+) -> Optional[User]:
+    try:
+        return await get_current_user(request, db)
+    except HTTPException:
+        return None
