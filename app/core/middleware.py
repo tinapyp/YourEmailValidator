@@ -2,6 +2,7 @@
 from fastapi import Request, HTTPException, status
 from datetime import datetime
 from sqlalchemy.orm import Session
+from app.core.utils import check_user_limit
 from app.database import get_db
 from app.auth.dependencies import get_current_user_optional, verify_api_key
 from app.api.models import APIKey, APIUsage
