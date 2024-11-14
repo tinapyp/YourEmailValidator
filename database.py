@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from models import Base  # Import the Base from your models file
 import uvicorn
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./email_validator.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///db/email_validator.db"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
