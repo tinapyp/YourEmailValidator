@@ -19,7 +19,31 @@
         </div>
 
         <!-- Stats Overview -->
-        <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <!-- Account Status -->
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+              <dt class="text-sm font-medium text-gray-500 truncate">Account Status</dt>
+              <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ current_user.status }}</dd>
+              {% if current_user.status == 'FREE' %}
+                <div class="mt-4">
+                  <div class="relative pt-1">
+                    <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-purple-200">
+                      {% set usage_percent = usage_stats.total_calls / 100 * 100 %}
+                      <div style="width:{{ usage_percent }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"></div>
+                    </div>
+                  </div>
+                  <p class="text-sm text-gray-600">{{ usage_stats.total_calls }}/100 API calls this month</p>
+                  <form action="{{ url_for('upgrade_to_donatur') }}" method="POST" class="mt-4">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">Upgrade to Donatur</button>
+                  </form>
+                </div>
+              {% else %}
+                <p class="mt-2 text-sm text-gray-600">Unlimited API access</p>
+              {% endif %}
+            </div>
+          </div>
+
           <!-- Total API Calls -->
           <div class="bg-white overflow-hidden shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">
