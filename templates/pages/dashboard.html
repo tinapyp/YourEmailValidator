@@ -178,10 +178,12 @@ const usageChart = new Chart(ctx, {
     data: {
         labels: {{ usage_stats.dates|tojson }},
         datasets: [{
-            label: 'API Calls',
-            data: {{ usage_stats.calls|tojson }},
-            borderColor: 'rgb(139, 92, 246)',
-            tension: 0.1
+          label: 'API Calls',
+          data: {{ usage_stats.calls|tojson }},
+          borderColor: 'rgb(139, 92, 246)',
+          tension: 0.1,
+          fill: true,
+          backgroundColor: 'rgba(139, 92, 246, 0.1)'
         }]
     },
     options: {
@@ -193,7 +195,12 @@ const usageChart = new Chart(ctx, {
                     stepSize: 1
                 }
             }
-        }
+        },
+        plugins: {
+          legend: {
+              display: false
+          }
+      }
     }
 });
 

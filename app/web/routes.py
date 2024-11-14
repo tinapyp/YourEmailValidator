@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -7,9 +7,11 @@ from app.database import get_db
 from app.auth.dependencies import get_current_user, get_current_user_optional
 from app.api.models import APIKey
 from datetime import datetime
-from app.auth.models import UserStatus
+from app.auth.models import User, UserStatus
 from fastapi import HTTPException
 import json
+
+from app.web.utils import get_dashboard_stats
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -35,20 +37,38 @@ async def home(request: Request, db: Session = Depends(get_db)):
     )
 
 
+@router.get("/docs-temp", response_class=HTMLResponse)
+async def docs(request: Request, db: Session = Depends(get_db)):
+    current_user = await get_current_user_optional(request, db)
+    return templates.TemplateResponse(
+        "pages/documentation.html",
+        {
+            "request": request,
+            "hero_title": "Validate emails with confidence ✨",
+            "hero_description": "Simple, reliable email validation API for developers.",
+            "faq_items": FAQ_ITEMS,
+            "current_year": datetime.now().year,
+            "current_user": current_user,
+        },
+    )
+
+
 @router.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(
     request: Request,
     db: Session = Depends(get_db),
-    current_user=Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ):
+    # Get active API keys
     api_keys = (
         db.query(APIKey)
         .filter(APIKey.user_id == current_user.id, APIKey.is_active == True)
         .all()
     )
 
-    usage_stats = {"total_calls": 0, "success_rate": 0, "dates": [], "calls": []}
-
+    # Get usage statistics
+    usage_stats = get_dashboard_stats(current_user, db)
+    usage_stats["dates"] = [date.isoformat() for date in usage_stats["dates"]]
     return templates.TemplateResponse(
         "pages/dashboard.html",
         {
@@ -56,6 +76,22 @@ async def dashboard(
             "current_user": current_user,
             "api_keys": api_keys,
             "usage_stats": usage_stats,
+        },
+    )
+
+
+@router.get("/docs-api", response_class=HTMLResponse)
+async def docs_api(request: Request, db: Session = Depends(get_db)):
+    current_user = await get_current_user_optional(request, db)
+    return templates.TemplateResponse(
+        "pages/docs-api.html",
+        {
+            "request": request,
+            "hero_title": "Validate emails with confidence ✨",
+            "hero_description": "Simple, reliable email validation API for developers.",
+            "faq_items": FAQ_ITEMS,
+            "current_year": datetime.now().year,
+            "current_user": current_user,
         },
     )
 

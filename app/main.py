@@ -6,6 +6,9 @@ from .database import Base, engine
 from .web.routes import router as web_router
 from .api.routes import router as api_router
 from .auth.routes import router as auth_router
+from .services.routes import router as services_router
+from fastapi.openapi.utils import get_openapi
+from fastapi.responses import HTMLResponse
 
 # Import all models to ensure they're registered with SQLAlchemy
 from .auth.models import User, UserStatus
@@ -14,7 +17,13 @@ from .api.models import APIKey, APIUsage
 # Create tables
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(
+    title="YourEmailValidator API",
+    version="1.0.0",
+    description="API for validating emails.",
+    docs_url=None,  # Disable the default Swagger UI at /docs
+    openapi_url="/openapi.json",  # Path to OpenAPI schema
+)
 
 # Static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -36,6 +45,36 @@ app.middleware("http")(log_api_requests)
 app.include_router(web_router)
 app.include_router(api_router)
 app.include_router(auth_router)
+app.include_router(services_router)
+
+
+def custom_get_openapi():
+    """Generate OpenAPI schema that includes only the email validation endpoints."""
+    openapi_schema = get_openapi(
+        title="",
+        version="",
+        routes=app.routes,
+    )
+
+    # Filter only email-related endpoints
+    filtered_paths = {
+        "/api/v1/validate-email": openapi_schema["paths"].get("/api/v1/validate-email"),
+        "/api/v1/check-disposable": openapi_schema["paths"].get(
+            "/api/v1/check-disposable"
+        ),
+        "/api/v1/check-mx-record": openapi_schema["paths"].get(
+            "/api/v1/check-mx-record"
+        ),
+    }
+
+    openapi_schema["paths"] = filtered_paths
+    # if "components" in openapi_schema:
+    #     del openapi_schema["components"]
+    openapi_schema["openapi"] = "3.0.0"
+    return openapi_schema
+
+
+app.openapi = custom_get_openapi
 
 
 # Startup and shutdown events

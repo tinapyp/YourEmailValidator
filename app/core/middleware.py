@@ -1,4 +1,3 @@
-# app/core/middleware.py
 from fastapi import Request, HTTPException, status
 from datetime import datetime
 from sqlalchemy.orm import Session
@@ -18,7 +17,6 @@ EXEMPT_ENDPOINTS = [
 
 async def log_api_requests(request: Request, call_next):
     if request.url.path.startswith("/api/"):
-        # Check if endpoint is exempt from API key verification
         if not any(
             request.url.path.startswith(endpoint) for endpoint in EXEMPT_ENDPOINTS
         ):
