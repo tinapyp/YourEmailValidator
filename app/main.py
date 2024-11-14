@@ -21,8 +21,9 @@ app = FastAPI(
     title="YourEmailValidator API",
     version="1.0.0",
     description="API for validating emails.",
-    docs_url=None,  # Disable the default Swagger UI at /docs
-    openapi_url="/openapi.json",  # Path to OpenAPI schema
+    docs_url=None,
+    redoc_url=None,
+    openapi_url="/openapi.json",
 )
 
 # Static files
