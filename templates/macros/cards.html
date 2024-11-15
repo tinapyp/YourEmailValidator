@@ -7,7 +7,7 @@
 </div>
 {% endmacro %}
 
-{% macro pricing_card(tier, price, description, features, popular=False, gradient=False) %}
+{% macro pricing_card(tier, price, description, features, register_url, login_url, button_text, button_class, popular=False, gradient=False) %}
 <div class="relative group bg-white p-6 rounded-lg shadow-md card-hover h-[200px] flex flex-col justify-between {% if gradient %}border-2 border-purple-500{% endif %}">
     <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
     
@@ -34,11 +34,16 @@
     </ul>
     
     <!-- Button aligned to bottom -->
-    <div class="mt-auto">
-        <a href="#" 
-           class="block w-full py-3 px-4 text-center text-white {% if gradient %}btn-gradient hover:opacity-90{% else %}bg-purple-500 hover:bg-purple-600{% endif %} rounded-full font-medium">
-            {% if gradient %}Donate{% else %}Get Started{% endif %}
+    <button class="mt-auto">
+        {% if button_class == 'btn-gradient' %}
+        <a href="{{ login_url }}" class="block w-full py-3 px-4 text-center {{ button_class }} rounded-full font-medium">
+            {{ button_text }}
         </a>
-    </div>
+        {% else %}
+        <a href="{{ register_url }}" class="block w-full py-3 px-4 text-center {{ button_class }} rounded-full font-medium">
+            {{ button_text }}
+        </a>
+        {% endif %}
+    </button>
 </div>
 {% endmacro %}

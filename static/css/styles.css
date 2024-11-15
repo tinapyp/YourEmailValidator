@@ -23,6 +23,11 @@ body {
     0 4px 6px -2px rgba(236, 72, 153, 0.05);
 }
 
+.mt-auto a {
+  position: relative;
+  z-index: 999 !important;
+}
+
 #faq details {
   border-bottom: 1px solid #e5e7eb;
 }
