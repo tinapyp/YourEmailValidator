@@ -60,6 +60,12 @@ def custom_get_openapi():
     # Filter only email-related endpoints
     filtered_paths = {
         "/api/v1/validate-email": openapi_schema["paths"].get("/api/v1/validate-email"),
+        "/api/v1/bulk-email-validate": openapi_schema["paths"].get(
+            "/api/v1/bulk-email-validate"
+        ),
+        "/api/v1/check-bulk-access": openapi_schema["paths"].get(
+            "/api/v1/check-bulk-access"
+        ),
         "/api/v1/check-disposable": openapi_schema["paths"].get(
             "/api/v1/check-disposable"
         ),
@@ -69,8 +75,6 @@ def custom_get_openapi():
     }
 
     openapi_schema["paths"] = filtered_paths
-    # if "components" in openapi_schema:
-    #     del openapi_schema["components"]
     openapi_schema["openapi"] = "3.0.0"
     return openapi_schema
 

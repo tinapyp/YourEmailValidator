@@ -1,6 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends, Header
+from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from typing import List, Optional, Tuple
+from typing import List, Tuple
+
+from app.api.utils import verify_api_key_header, verify_donatur_access
+from app.auth.models import User, UserStatus
 from .schemas import SingleEmailRequest, BulkEmailRequest, EmailResponse
 from .email_validator import (
     EmailValidator,
@@ -8,38 +11,9 @@ from .email_validator import (
     DisposableEmailError,
     EmailMXRecordError,
 )
-from app.database import get_db
-from app.auth.dependencies import verify_api_key
-from app.api.models import APIKey, APIUsage
-from app.core.utils import check_user_limit
-from datetime import datetime
+from app.api.models import APIKey
 
 router = APIRouter(prefix="/api/v1")
-
-
-async def verify_api_key_header(
-    x_api_key: str = Header(...), db: Session = Depends(get_db)
-) -> tuple[APIKey, Session]:
-    """Verify API key and return the associated user and API key record."""
-    user = verify_api_key(x_api_key, db)
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid API key")
-
-    # Get API key record
-    api_key = (
-        db.query(APIKey)
-        .filter(APIKey.key == x_api_key, APIKey.is_active == True)
-        .first()
-    )
-
-    # Check usage limits
-    if not check_user_limit(user.id, db):
-        raise HTTPException(
-            status_code=429,
-            detail="Monthly API limit reached. Please upgrade to Donatur status for unlimited access.",
-        )
-
-    return api_key, db
 
 
 @router.post("/validate-email", response_model=EmailResponse)
@@ -99,18 +73,26 @@ async def check_mx_record_email(
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.post("/bulk-validate", response_model=List[EmailResponse])
+@router.post("/bulk-email-validate", response_model=List[EmailResponse])
 async def bulk_validate_email(
     request: BulkEmailRequest,
-    auth: Tuple[str, str] = Depends(verify_api_key_header),
+    auth: Tuple[APIKey, Session] = Depends(
+        verify_donatur_access
+    ),  # Use the new dependency
 ):
-    """Endpoint to validate a list of emails."""
+    """Endpoint to validate a list of emails. Only available for DONATUR users."""
     api_key, db = auth
 
-    # Count this as multiple API calls based on number of emails
-    total_emails = len(request.email)
+    # Optional: Add limit to number of emails in a single request
+    MAX_BULK_EMAILS = 1000  # You can adjust this number
+    if len(request.email) > MAX_BULK_EMAILS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Maximum {MAX_BULK_EMAILS} emails allowed per request",
+        )
 
     responses = []
+    success_count = 0
 
     for email in request.email:
         email_validator = EmailValidator(email)
@@ -120,6 +102,7 @@ async def bulk_validate_email(
             response = EmailResponse(
                 email=email, is_valid=True, message="Email is valid."
             )
+            success_count += 1
         except EmailFormatError:
             response = EmailResponse(
                 email=email, is_valid=False, message="Invalid email format."
@@ -134,7 +117,42 @@ async def bulk_validate_email(
             response = EmailResponse(
                 email=email, is_valid=False, message="Domain has no valid MX records."
             )
-
         responses.append(response)
 
+    # Log usage for bulk validation
+    try:
+        # Log each email validation as a separate usage
+        for _ in range(len(request.email)):
+            usage_log = APIUsage(
+                user_id=api_key.user_id,
+                api_key_id=api_key.id,
+                endpoint="/api/v1/bulk-validate",
+                is_success=True,
+                response_time=0,  # You could add actual timing if needed
+            )
+            db.add(usage_log)
+
+        api_key.usage_count += len(request.email)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        # Log the error but don't fail the request since validation was successful
+        print(f"Error logging API usage: {str(e)}")
+
     return responses
+
+
+@router.get("/check-bulk-access")
+async def check_bulk_validation_access(
+    auth: Tuple[APIKey, Session] = Depends(verify_api_key_header),
+):
+    """Check if the current user has access to bulk validation."""
+    api_key, db = auth
+    user = db.query(User).filter(User.id == api_key.user_id).first()
+
+    return {
+        "has_access": user.status == UserStatus.DONATUR,
+        "current_status": user.status,
+        "required_status": UserStatus.DONATUR,
+        "upgrade_required": user.status != UserStatus.DONATUR,
+    }
