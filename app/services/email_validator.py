@@ -1,19 +1,7 @@
 import re
-from .utils import is_domain_valid
-from .utils import is_disposable
+from .utils import is_domain_valid, is_disposable
 from .schemas import EmailResponse
-
-
-class EmailFormatError(Exception):
-    """Raised when the email format is invalid."""
-
-
-class DisposableEmailError(Exception):
-    """Raised when the email domain is disposable."""
-
-
-class EmailMXRecordError(Exception):
-    """Raised when the email domain has no valid MX records."""
+from .exceptions_types import EmailFormatError, DisposableEmailError, EmailMXRecordError
 
 
 class EmailValidator:
