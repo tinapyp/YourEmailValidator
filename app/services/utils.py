@@ -18,12 +18,10 @@ def load_disposable_domains() -> None:
         return
 
     try:
-        print("Loading disposable domains...")
         response = requests.get(DISPOSABLE_URL)
         response.raise_for_status()
         disposable_domains = set(response.json())
         disposable_domains_loaded = True
-        print(f"Loaded {len(disposable_domains)} disposable domains.")
     except requests.RequestException as e:
         print(f"Error fetching disposable domains: {e}")
     except ValueError as e:

@@ -1,41 +1,42 @@
-from sqlalchemy import Boolean, Column, Integer, String, DateTime, ForeignKey, Float
+from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.database import Base
-import uuid
 
 
 class APIKey(Base):
     __tablename__ = "api_keys"
 
-    id = Column(Integer, primary_key=True, index=True)
-    key = Column(String, unique=True, index=True)
-    name = Column(String)
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    key = Column(String(255), unique=True, index=True, nullable=False)
+    name = Column(String(100), nullable=False)
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     is_active = Column(Boolean, default=True)
     usage_count = Column(Integer, default=0)
 
-    # Relationship
+    # Relationships
     user = relationship("User", back_populates="api_keys")
     usage = relationship(
         "APIUsage", back_populates="api_key", cascade="all, delete-orphan"
     )
 
-    @staticmethod
-    def generate_key():
-        return f"evk_{uuid.uuid4().hex}"
-
 
 class APIUsage(Base):
     __tablename__ = "api_usage"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
-    api_key_id = Column(Integer, ForeignKey("api_keys.id", ondelete="CASCADE"))
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    api_key_id = Column(
+        Integer, ForeignKey("api_keys.id", ondelete="CASCADE"), nullable=False
+    )
     timestamp = Column(DateTime(timezone=True), server_default=func.now())
-    endpoint = Column(String)
-    is_success = Column(Boolean)
+    endpoint = Column(String(255), nullable=False)
+    is_success = Column(Boolean, default=True)
     response_time = Column(Float)
 
     # Relationships

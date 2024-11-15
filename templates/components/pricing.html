@@ -6,8 +6,13 @@
       <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-gradient">Simple pricing for everyone</h2>
       <p class="max-w-[600px] text-gray-500 md:text-xl/relaxed">Choose the perfect plan for your needs</p>
     </div>
-    <div class="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto">{{ pricing_card(tier='Free Tier', price='$0', description='Perfect for small projects', features=['100 API calls per month', 'Basic email validation'], popular=True) }}
 
-      {{ pricing_card(tier='Donatur Tier', price='Custom', description='For power users', features=['Unlimited API calls', 'Bulk validation support'], gradient=True) }}</div>
+    <div class="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto">
+      <!-- Free Tier Pricing Card -->
+      {{ pricing_card(tier='Free Tier', price='$0', description='', features=['100 API calls per month', 'Basic email validation', 'Limited disposable email detection', 'Syntax and format validation']) }}
+
+      <!-- DONATUR Tier Pricing Card -->
+      {{ pricing_card(tier='DONATUR Tier', price='$29', description='One time per life 🤣', features=['Unlimited API calls', 'Bulk validation support', 'Advanced email validation (disposable detection, MX record checks)', 'Domain-specific validation', 'Customizable validation options (e.g., allow/deny certain TLDs or domains)'], gradient=True, popular=True) }}
+    </div>
   </div>
 </section>
