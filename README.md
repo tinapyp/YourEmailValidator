@@ -1,63 +1,84 @@
-To set up and run the project:
+# Email Validator
 
-1. Backend Setup:
+This project provides a simple and efficient solution to validate email addresses. It can be integrated into your web applications, ensuring that users provide valid and correctly formatted email addresses before submission.
+
+## Features
+
+- **Valid Email Format**: Ensures the email matches standard email format rules.
+- **Domain Validation**: Checks whether the email domain is valid and reachable.
+- **Customizable Validation Rules**: You can configure additional rules for validation based on your application's requirements.
+- **Fast and Reliable**: Built to be lightweight and optimized for quick validation.
+
+## Installation
+
+To install the email validator, clone the repository and install the required dependencies using `pip`.
 
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+git clone https://github.com/yourusername/email-validator.git
+cd email-validator
 pip install -r requirements.txt
-python main.py
 ```
 
-2. Frontend Setup:
+## Usage
 
-```bash
-cd frontend
-npm install
-npm run dev
+Once the package is installed, you can easily validate an email address using the following example:
+
+```python
+from app.services.email_validator import validate_email
+
+# Example email address
+email = "user@example.com"
+
+# Validate the email
+is_valid = validate_email(email)
+
+if is_valid:
+    print("The email is valid!")
+else:
+    print("The email is invalid!")
 ```
 
-3. Create a `.env` file in the backend directory:
+The `validate_email` function checks if the email has a proper format and ensures the domain is reachable.
 
+## Configuration
+
+You can customize the behavior of the email validator by adjusting the configuration in `app/services/config.py`. Add your custom rules or external services like email domain lookups for extended validation.
+
+## API Endpoint
+
+If you want to integrate email validation into your API, you can use the provided API endpoint. The endpoint expects a JSON payload with the email to be validated.
+
+### Request Example
+
+```json
+{
+  "email": "user@example.com"
+}
 ```
-DATABASE_URL=postgresql://user:password@localhost/dbname
-SECRET_KEY=your-secret-key-here
+
+### Response Example
+
+```json
+{
+  "valid": true,
+  "message": "The email is valid."
+}
 ```
 
-4.Create a .env.local file in the frontend directory:
+### Using the API in `app/api/routes.py`
 
+```python
+from fastapi import APIRouter
+from app.services.email_validator import validate_email
+
+router = APIRouter()
+
+@router.post("/validate-email/")
+async def validate_email_endpoint(email: str):
+    is_valid = validate_email(email)
+    return {"valid": is_valid, "message": "The email is valid." if is_valid else "The email is invalid."}
 ```
-NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
-```
 
-This architecture provides:
+## Development
 
-1. Backend:
-
-- Clean separation of concerns with modules for models, schemas, CRUD operations, and API endpoints
-- Dependency injection for database sessions and current user
-- Proper configuration management
-- Type hints throughout the codebase
-
-2. Frontend:
-
-- Component-based architecture using React and Next.js
-- Reusable UI components
-- Type-safe with TypeScript
-- Protected routes for authenticated users
-- Clean separation of concerns between pages and components
-
-The landing page has been integrated into the frontend and enhanced with:
-
-- Authentication UI (login/register)
-- Dashboard for managing API keys
-- Responsive design
-- Type-safe components
-
-Would you like me to:
-
-1. Add more frontend features like user profile management?
-2. Implement the email validation endpoints?
-3. Add documentation for the API endpoints?
-4. Add tests for both frontend and backend?
+To contribute to this project, fork the repository and make changes to your fork. Once you're done, submit a pull request to the main repository.
