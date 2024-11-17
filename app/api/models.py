@@ -1,3 +1,5 @@
+import random
+import string
 from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
@@ -16,6 +18,11 @@ class APIKey(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     is_active = Column(Boolean, default=True)
     usage_count = Column(Integer, default=0)
+
+    @staticmethod
+    def generate_key(length=32):
+        characters = string.ascii_letters + string.digits
+        return "".join(random.choice(characters) for _ in range(length))
 
     # Relationships
     user = relationship("User", back_populates="api_keys")
