@@ -58,7 +58,7 @@ async def login(
         expires=1800,
         path="/",
         samesite="lax",
-        secure=False,
+        secure=True,
     )
 
     return response
