@@ -1,8 +1,9 @@
 from random import random
 import string
+import secrets
+from datetime import datetime, timedelta, timezone
 from jose import jwt
 from passlib.context import CryptContext
-from datetime import datetime, timedelta
 from app.config import settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -26,9 +27,34 @@ def generate_random_password(length: int = 12) -> str:
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
+
+    utc_now = datetime.now(timezone.utc)
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = utc_now + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = utc_now + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+
+
+def generate_password_reset_token() -> str:
+    """Generate a secure random token for password reset."""
+    return secrets.token_urlsafe(32)
+
+
+def create_password_reset_email(reset_url: str) -> str:
+    """Create the password reset email body."""
+    return f"""
+Hello,
+
+You have requested to reset your password. Please click the link below to reset your password:
+
+{reset_url}
+
+If you didn't request this, please ignore this email.
+
+This link will expire in 30 minutes.
+
+Best regards,
+YourEmailValidator Team
+    """

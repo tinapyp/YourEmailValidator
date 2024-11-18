@@ -31,7 +31,7 @@ async def create_api_key(
             created_at=new_key.created_at,
             usage_count=new_key.usage_count,
         )
-    except Exception as e:
+    except Exception:
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

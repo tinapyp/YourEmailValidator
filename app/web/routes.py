@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, Request, status
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import APIRouter, Depends, Request
+from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.core.utils import get_usage_stats
@@ -8,7 +8,6 @@ from app.auth.dependencies import get_current_user, get_current_user_optional
 from app.api.models import APIKey
 from datetime import datetime
 from app.auth.models import User, UserStatus
-from fastapi import HTTPException
 import json
 
 from app.web.utils import get_dashboard_stats

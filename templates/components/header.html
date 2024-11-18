@@ -27,6 +27,10 @@
                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             Dashboard
                         </a>
+                        <a href="{{ url_for('change_password') }}" 
+                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            Change Password
+                        </a>
                         <form action="{{ url_for('logout') }}" method="post" class="block">
                             <button type="submit" 
                                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">

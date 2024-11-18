@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Integer, String, DateTime, Enum
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 import enum
@@ -28,3 +28,19 @@ class User(Base):
     api_usage = relationship(
         "APIUsage", back_populates="user", cascade="all, delete-orphan"
     )
+
+
+class PasswordReset(Base):
+    __tablename__ = "password_resets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    token = Column(String(255), unique=True, index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    expires_at = Column(DateTime(timezone=True))
+    is_used = Column(Boolean, default=False)
+
+    user = relationship("User", back_populates="password_resets")
+
+
+User.password_resets = relationship("PasswordReset", back_populates="user")

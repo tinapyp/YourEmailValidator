@@ -11,7 +11,7 @@ from .email_validator import (
     DisposableEmailError,
     EmailMXRecordError,
 )
-from app.api.models import APIKey, APIUsage
+from app.api.models import APIKey
 
 router = APIRouter(prefix="/api/v1")
 
