@@ -7,6 +7,7 @@ from .web.routes import router as web_router
 from .api.routes import router as api_router
 from .auth.routes import router as auth_router
 from .services.routes import router as services_router
+from .webhooks.routes import router as webhooks_router
 from fastapi.openapi.utils import get_openapi
 
 
@@ -17,7 +18,7 @@ app = FastAPI(
     title="YourEmailValidator API",
     version="1.0.0",
     description="API for validating emails.",
-    # docs_url=None,
+    docs_url=None,
     redoc_url=None,
     openapi_url="/openapi.json",
 )
@@ -43,6 +44,7 @@ app.include_router(web_router)
 app.include_router(api_router)
 app.include_router(auth_router)
 app.include_router(services_router)
+app.include_router(webhooks_router)
 
 
 def custom_get_openapi():

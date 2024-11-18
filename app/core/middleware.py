@@ -1,6 +1,5 @@
 from fastapi import Request, HTTPException, status
 from datetime import datetime
-from sqlalchemy.orm import Session
 from app.core.utils import check_user_limit
 from app.database import get_db
 from app.auth.dependencies import get_current_user_optional, verify_api_key
@@ -12,6 +11,7 @@ EXEMPT_ENDPOINTS = [
     "/api/auth",
     "/api/docs",
     "/api/openapi.json",
+    "/webhooks/socialbuzz",
 ]
 
 

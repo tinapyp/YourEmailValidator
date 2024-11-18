@@ -12,16 +12,18 @@
         {% set button_url_free = url_for('dashboard') %}
 
         {% set button_text_donate = 'Upgrade Now' %}
+        {% set button_url_donate = 'https://sociabuzz.com/youremailvalidator/donate' %}
       {% else %}
         {% set button_text_free = 'Get Started' %}
         {% set button_url_free = url_for('register') %}
 
         {% set button_text_donate = 'Join as Donatur' %}
+        {% set button_url_donate = 'https://sociabuzz.com/youremailvalidator/donate' %}
       {% endif %}
 
       {% set button_class = 'btn-gradient text-white' %}
       {{ pricing_card(tier='Free Tier', price='$0', description='', features=['100 API calls per month', 'Basic email validation', 'Limited disposable email detection', 'Syntax and format validation'], register_url=button_url_free, button_text=button_text_free, button_class=button_class) }}
-      {{ pricing_card(tier='DONATUR Tier', price='$29', description='One time per life 🤣', features=['Unlimited API calls', 'Bulk validation support', 'Advanced email validation (disposable detection, MX record checks)', 'Domain-specific validation', 'Customizable validation options (e.g., allow/deny certain TLDs or domains)'], register_url=button_url, button_text=button_text_donate, button_class=button_class, gradient=True, popular=True) }}
+      {{ pricing_card(tier='DONATUR Tier', price='$29', description='One time per life 🤣', features=['Unlimited API calls', 'Bulk validation support', 'Advanced email validation (disposable detection, MX record checks)', 'Domain-specific validation', 'Customizable validation options (e.g., allow/deny certain TLDs or domains)'], register_url=button_url_donate, button_text=button_text_donate, button_class=button_class, gradient=True, popular=True) }}
     </div>
   </div>
 </section>

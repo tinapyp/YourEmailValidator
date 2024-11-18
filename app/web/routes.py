@@ -96,20 +96,20 @@ async def docs_api(request: Request, db: Session = Depends(get_db)):
     )
 
 
-@router.post("/upgrade-to-donatur")
-async def upgrade_to_donatur(
-    request: Request,
-    current_user=Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
-    try:
-        current_user.status = UserStatus.DONATUR
-        db.commit()
-        return RedirectResponse(
-            url="/dashboard?upgraded=true", status_code=status.HTTP_302_FOUND
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to upgrade user status")
+# @router.post("/upgrade-to-donatur")
+# async def upgrade_to_donatur(
+#     request: Request,
+#     current_user=Depends(get_current_user),
+#     db: Session = Depends(get_db),
+# ):
+#     try:
+#         current_user.status = UserStatus.DONATUR
+#         db.commit()
+#         return RedirectResponse(
+#             url="/dashboard?upgraded=true", status_code=status.HTTP_302_FOUND
+#         )
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail="Failed to upgrade user status")
 
 
 @router.get("/usage-stats")

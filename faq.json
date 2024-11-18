@@ -8,7 +8,7 @@
     "answer": "Yes! Our API is open-source and available on GitHub. You can self-host it on your own infrastructure."
   },
   {
-    "question": "What validation methods are used?",
-    "answer": "We use multiple validation methods including syntax checking, domain validation, and MX record verification."
+    "question": "I have another question",
+    "answer": "Shoot me an email at fathin@youremailvalidator.com"
   }
 ]
