@@ -195,10 +195,9 @@ async def forgot_password(request: Request, db: Session = Depends(get_db)):
 
 
 @router.get("/reset-password/{token}", response_class=HTMLResponse)
-async def reset_password_page(
-    request: Request, token: str, db: Session = Depends(get_db)
-):
+async def reset_password_page(request: Request, db: Session = Depends(get_db)):
     """Render reset password form."""
+    token = request.path_params.get("token")
     reset_request = (
         db.query(models.PasswordReset)
         .filter(
