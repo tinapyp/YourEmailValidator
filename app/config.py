@@ -13,10 +13,14 @@ class Settings(BaseSettings):
     MYSQL_HOST: str
     MYSQL_PORT: int
     MYSQL_DB: str
+    SMTP_SERVER: str
+    SMTP_PORT: int
+    LOGIN_EMAIL: str
+    SENDER_EMAIL: str
+    LOGIN_PASSWORD: str
 
     @property
     def DATABASE_URL(self) -> str:
-        # Properly encode special characters in the password
         from urllib.parse import quote_plus
 
         password = quote_plus(self.MYSQL_PASSWORD)

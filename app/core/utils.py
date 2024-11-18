@@ -4,6 +4,40 @@ from sqlalchemy.orm import Session
 from app.api.models import APIUsage
 from app.auth.models import User, UserStatus
 from typing import Dict, Any
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SMTP_SERVER = os.environ.get("SMTP_SERVER")
+SMTP_PORT = os.environ.get("SMTP_PORT")
+LOGIN_EMAIL = os.environ.get("LOGIN_EMAIL")
+SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
+LOGIN_PASSWORD = os.environ.get("LOGIN_PASSWORD")
+
+
+def send_email(to_email: str, subject: str, body: str):
+    """
+    Send an email using SMTP.
+    """
+    # Create the email message
+    message = MIMEMultipart()
+    message["From"] = SENDER_EMAIL
+    message["To"] = to_email
+    message["Subject"] = subject
+    message.attach(MIMEText(body, "plain"))
+
+    # Send the email
+    try:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(LOGIN_EMAIL, LOGIN_PASSWORD)
+            server.sendmail(SENDER_EMAIL, to_email, message.as_string())
+    except Exception as e:
+        raise Exception(f"Failed to send email: {str(e)}")
 
 
 def get_usage_stats(user_id: int, db: Session, days: int = 30) -> Dict[str, Any]:
