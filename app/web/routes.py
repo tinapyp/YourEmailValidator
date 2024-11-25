@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, Request
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.core.utils import get_usage_stats
@@ -95,7 +95,7 @@ async def docs_api(request: Request, db: Session = Depends(get_db)):
     )
 
 
-# @router.post("/upgrade-to-donatur")
+# @router.post("/upgrade-to-donatur" name='upgrade_to_donatur')
 # async def upgrade_to_donatur(
 #     request: Request,
 #     current_user=Depends(get_current_user),
