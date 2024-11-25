@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, status
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.core.utils import get_usage_stats
@@ -18,6 +18,12 @@ templates = Jinja2Templates(directory="templates")
 # Load FAQ data
 with open("faq.json", "r") as f:
     FAQ_ITEMS = json.load(f)
+
+
+@router.get("/robots.txt", response_class=PlainTextResponse)
+def robots():
+    data = """User-agent: *\nDisallow: /admin/\nDisallow: /upgrade-to-donatur/"""
+    return data
 
 
 @router.get("/", response_class=HTMLResponse)
