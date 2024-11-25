@@ -51,8 +51,8 @@ To install the email validator, follow these steps:
    Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/your-email-validator.git
-   cd your-email-validator
+   git clone https://github.com/tinapyp/YourEmailValidator.git
+   cd YourEmailValidator
    ```
 
 2. **Install Dependencies**:
