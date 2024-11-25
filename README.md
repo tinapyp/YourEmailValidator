@@ -1,6 +1,7 @@
 # Email Validator
 
 This project provides a simple and efficient solution to validate email addresses. It can be easily integrated into your web applications, ensuring that users provide valid and correctly formatted email addresses before submission.
+
 ![Email Validator Banner](./static//images//hero.png)
 
 ## Features
