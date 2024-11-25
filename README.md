@@ -1,8 +1,39 @@
-# Email Validator
+<br /><br />
 
-This project provides a simple and efficient solution to validate email addresses. It can be easily integrated into your web applications, ensuring that users provide valid and correctly formatted email addresses before submission.
+<p align="center">
+<a href="https://youremailvalidator.com">
+  <img style="border: solid 1px rgba(0,0,0,0.2);" src="./static/images/android-chrome-512x512.png" alt="Your Email Validator Logo" width="70">
+</a>
+</p>
 
-![Email Validator Banner](./static//images//hero.png)
+<h3 align="center"><b>Your Email Validator</b></h3>
+<p align="center"><b>Effortlessly validate email addresses with our open-source solution.</b></p>
+
+<p align="center">
+<a href="https://youremailvalidator.com">
+<img alt="Website" src="https://img.shields.io/badge/Website-Visit%20Now-brightgreen?style=for-the-badge" />
+</a>
+<img alt="Commit activity per month" src="https://img.shields.io/github/commit-activity/m/yourusername/your-email-validator?style=for-the-badge" />
+</p>
+
+<p align="center">
+    <a href="https://youremailvalidator.com"><b>Website</b></a> •
+    <a href="https://youremailvalidator.com/docs-api"><b>Documentation</b></a>
+</p>
+
+<p>
+    <a href="https://youremailvalidator.com" target="_blank">
+      <img
+        src="./static/images/hero.png"
+        alt="Your Email Validator in Action"
+        width="100%"
+      />
+    </a>
+</p>
+
+Your Email Validator is a lightweight and efficient solution designed to validate email addresses seamlessly. From ensuring proper formatting to checking domain validity, this tool is your go-to for maintaining high-quality data in your applications.
+
+> Suggestions, feature requests, and bug reports are always welcome! Head to our [Website](https://youremailvalidator.com) to learn more or share your feedback.
 
 ## Features
 
