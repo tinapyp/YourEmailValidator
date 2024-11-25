@@ -13,7 +13,7 @@
 <a href="https://youremailvalidator.com">
 <img alt="Website" src="https://img.shields.io/badge/Website-Visit%20Now-brightgreen?style=for-the-badge" />
 </a>
-<img alt="Commit activity per month" src="https://img.shields.io/github/commit-activity/m/yourusername/your-email-validator?style=for-the-badge" />
+<img alt="Commit activity per month" src="https://img.shields.io/github/commit-activity/m/tinapyp/your-email-validator?style=for-the-badge" />
 </p>
 
 <p align="center">
